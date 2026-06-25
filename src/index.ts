@@ -3,7 +3,7 @@
  * Entry point for the engine
  */
 
-import { readFileSync } from 'fs';
+import { readFileSync, statSync } from 'fs';
 import { buildDataFlowGraph, getVulnerablePaths } from './engine/graph.js';
 import { generateTaintTraces, getVulnerableTraces, formatTrace } from './engine/taint.js';
 import { detectSecrets } from './rules/secrets.js';
@@ -21,10 +21,19 @@ export interface AuditResult {
   };
 }
 
+// Security: Max file size to prevent memory exhaustion
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
 /**
  * Audit a file for security issues
  */
 export async function auditFile(filepath: string): Promise<AuditResult> {
+  // Security check: File size limit
+  const stats = statSync(filepath);
+  if (stats.size > MAX_FILE_SIZE) {
+    throw new Error(`File too large: ${(stats.size / 1024 / 1024).toFixed(2)}MB (max ${MAX_FILE_SIZE / 1024 / 1024}MB)`);
+  }
+  
   const code = readFileSync(filepath, 'utf-8');
   return auditCode(code, filepath);
 }
@@ -33,6 +42,11 @@ export async function auditFile(filepath: string): Promise<AuditResult> {
  * Audit code string for security issues
  */
 export async function auditCode(code: string, filename = 'input.js'): Promise<AuditResult> {
+  // Security check: Code length
+  if (code.length > MAX_FILE_SIZE) {
+    throw new Error(`Code too large: ${(code.length / 1024 / 1024).toFixed(2)}MB (max ${MAX_FILE_SIZE / 1024 / 1024}MB)`);
+  }
+  
   // Build data-flow graph
   const graph = buildDataFlowGraph(code, filename);
   
