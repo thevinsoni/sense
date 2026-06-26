@@ -3,13 +3,13 @@
  */
 
 import { parse } from '@babel/parser';
-import * as traverseModule from '@babel/traverse';
+import traverseModule from '@babel/traverse';
 import * as t from '@babel/types';
 import { isSource, SourcePattern } from './sources.js';
 import { isSink, SinkPattern } from './sinks.js';
 
 // @ts-ignore - Handle CJS/ESM interop
-const traverse = traverseModule.default ?? traverseModule;
+const traverse = typeof traverseModule === 'function' ? traverseModule : traverseModule.default;
 
 export interface DataFlowNode {
   id: string;
