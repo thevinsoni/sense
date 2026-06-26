@@ -2,6 +2,8 @@
  * AI Path Judge - Uses host AI to determine exploitability
  */
 
+import { callAI, getAIProviderFromEnv, type AIProvider } from './client.js';
+
 export interface PathJudgment {
   exploitable: boolean;
   confidence: number;
@@ -80,21 +82,56 @@ export function parsePathJudgment(response: string): PathJudgment | null {
 }
 
 /**
- * Placeholder for host AI integration
- * In Phase 2, this will call the actual host AI (Claude/etc.)
+ * Judge path exploitability using AI
  */
-export async function judgePathWithAI(context: PathContext): Promise<PathJudgment> {
-  const prompt = buildPathJudgePrompt(context);
+export async function judgePathWithAI(
+  context: PathContext,
+  provider?: AIProvider
+): Promise<PathJudgment> {
+  // Get provider from env if not provided
+  const aiProvider = provider || getAIProviderFromEnv();
   
-  // TODO: Phase 2 - integrate with host AI
-  // For now, return a conservative judgment
-  console.warn('⚠️  AI path judgment not yet integrated - using conservative defaults');
+  // If no AI provider available, return conservative judgment
+  if (!aiProvider) {
+    console.warn('⚠️  No AI provider configured - using conservative defaults');
+    console.warn('💡 Set OPENAI_API_KEY, ANTHROPIC_API_KEY, or OLLAMA_HOST to enable AI judgment');
+    
+    return {
+      exploitable: true, // Conservative: assume exploitable
+      confidence: 0.7,
+      reasoning: 'AI judgment not configured - marked as potentially exploitable',
+      severity: 'high',
+      recommendation: 'Configure AI provider or review manually',
+    };
+  }
   
-  return {
-    exploitable: true, // Conservative: assume exploitable until AI confirms otherwise
-    confidence: 0.7,
-    reasoning: 'AI judgment not yet integrated - marked as potentially exploitable',
-    severity: 'high',
-    recommendation: 'Manual review required until AI integration complete',
-  };
+  try {
+    const prompt = buildPathJudgePrompt(context);
+    const response = await callAI(aiProvider, prompt);
+    
+    const judgment = parsePathJudgment(response.text);
+    
+    if (!judgment) {
+      console.warn('⚠️  Failed to parse AI response - using conservative defaults');
+      return {
+        exploitable: true,
+        confidence: 0.6,
+        reasoning: 'Failed to parse AI response',
+        severity: 'high',
+        recommendation: 'Review manually',
+      };
+    }
+    
+    return judgment;
+  } catch (error) {
+    console.warn(`⚠️  AI judgment failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    
+    return {
+      exploitable: true,
+      confidence: 0.7,
+      reasoning: `AI judgment failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      severity: 'high',
+      recommendation: 'Review manually',
+    };
+  }
 }

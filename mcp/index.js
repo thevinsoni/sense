@@ -117,17 +117,33 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
           low: result.summary.low,
         };
 
-        const findings = result.findings.map(f => ({
-          type: f.type,
-          severity: f.severity,
-          message: f.message,
-          source: f.source,
-          sink: f.sink,
-          cwe: f.cwe,
-          line: f.line,
-          evidence: f.evidence,
-          fix: f.fix,
-        }));
+        // Combine vulnerabilities and secrets
+        const allFindings = [
+          ...result.vulnerabilities.map(v => ({
+            type: v.category,
+            severity: v.severity,
+            message: `${v.finding} vulnerability detected`,
+            source: v.path[0] || 'unknown',
+            sink: v.path[v.path.length - 1] || 'unknown',
+            cwe: v.cwe,
+            line: v.location.line,
+            evidence: v.evidence.filter(e => e.line).map(e => `${e.type} at line ${e.line}`).join(', ') || 'No evidence',
+            fix: 'Use proper sanitization (parameterized queries, input validation, etc.)',
+          })),
+          ...result.secrets.map(s => ({
+            type: 'secret',
+            severity: 'high',
+            message: `${s.type} detected`,
+            source: 'hardcoded',
+            sink: 'code',
+            cwe: 'CWE-798',
+            line: s.line,
+            evidence: s.match,
+            fix: 'Use environment variables',
+          }))
+        ];
+        
+        const findings = allFindings;
 
         return {
           content: [
@@ -158,17 +174,29 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
             critical: result.summary.critical,
             high: result.summary.high,
             medium: result.summary.medium,
-            low: result.summary.low,
           };
 
-          const findings = result.findings.map(f => ({
-            type: f.type,
-            severity: f.severity,
-            message: f.message,
-            line: f.line,
-            evidence: f.evidence,
-            fix: f.fix,
-          }));
+          // Combine vulnerabilities and secrets
+          const allFindings = [
+            ...result.vulnerabilities.map(v => ({
+              type: v.category,
+              severity: v.severity,
+              message: `${v.finding} vulnerability detected`,
+              line: v.location.line,
+              evidence: v.evidence.filter(e => e.line).map(e => `${e.type} at line ${e.line}`).join(', ') || 'No evidence',
+              fix: 'Use proper sanitization (parameterized queries, input validation, etc.)',
+            })),
+            ...result.secrets.map(s => ({
+              type: 'secret',
+              severity: 'high',
+              message: `${s.type} detected`,
+              line: s.line,
+              evidence: s.match,
+              fix: 'Use environment variables',
+            }))
+          ];
+          
+          const findings = allFindings;
 
           return {
             content: [

@@ -3,6 +3,7 @@
  */
 
 import { TaintTrace } from './taint.js';
+import { callAI, getAIProviderFromEnv, type AIProvider } from '../ai/client.js';
 
 export interface AdversarialResult {
   exploitable: boolean;
@@ -79,22 +80,57 @@ export function parseAdversarialResult(response: string): AdversarialResult | nu
 }
 
 /**
- * Placeholder for adversarial verification
+ * Verify exploitability using adversarial AI
  */
 export async function verifyWithAdversary(
   trace: TaintTrace,
-  code: string
+  code: string,
+  provider?: AIProvider
 ): Promise<AdversarialResult> {
-  const prompt = buildAdversarialPrompt(trace, code);
+  // Get provider from env if not provided
+  const aiProvider = provider || getAIProviderFromEnv();
   
-  // TODO: Phase 3 - integrate with host AI
-  console.warn('⚠️  Adversarial verification not yet integrated');
+  // If no AI provider available, return conservative result
+  if (!aiProvider) {
+    console.warn('⚠️  No AI provider configured for adversarial verification');
+    console.warn('💡 Set OPENAI_API_KEY, ANTHROPIC_API_KEY, or OLLAMA_HOST to enable');
+    
+    return {
+      exploitable: true,
+      confidence: 0.7,
+      attackVector: 'Adversarial verification not configured',
+      payload: '',
+      reasoning: 'Marked as potentially exploitable - configure AI provider to verify',
+    };
+  }
   
-  return {
-    exploitable: true,
-    confidence: 0.7,
-    attackVector: 'Adversarial verification not yet integrated',
-    payload: '',
-    reasoning: 'Marked as potentially exploitable until AI attacker confirms',
-  };
+  try {
+    const prompt = buildAdversarialPrompt(trace, code);
+    const response = await callAI(aiProvider, prompt);
+    
+    const result = parseAdversarialResult(response.text);
+    
+    if (!result) {
+      console.warn('⚠️  Failed to parse adversarial response');
+      return {
+        exploitable: true,
+        confidence: 0.6,
+        attackVector: 'Failed to parse AI response',
+        payload: '',
+        reasoning: 'Parser error - marked as potentially exploitable',
+      };
+    }
+    
+    return result;
+  } catch (error) {
+    console.warn(`⚠️  Adversarial verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    
+    return {
+      exploitable: true,
+      confidence: 0.7,
+      attackVector: `AI verification failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+      payload: '',
+      reasoning: 'Marked as potentially exploitable due to verification error',
+    };
+  }
 }

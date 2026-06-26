@@ -90,33 +90,87 @@ async function scanDocument(document: vscode.TextDocument) {
     const result = await auditFile(document.uri.fsPath);
     const diagnostics: vscode.Diagnostic[] = [];
 
-    // Convert findings to VS Code diagnostics
-    const allFindings = [...result.vulnerabilities, ...result.secrets, ...result.destructive];
-    for (const finding of allFindings) {
-      const severity = getSeverity(finding.severity);
+    // Convert vulnerabilities to VS Code diagnostics
+    for (const vuln of result.vulnerabilities) {
+      const severity = getSeverity(vuln.severity);
+      const line = vuln.location?.line || 1;
       const range = new vscode.Range(
-        finding.line - 1, 0,
-        finding.line - 1, 1000
+        line - 1, 0,
+        line - 1, 1000
+      );
+
+      const evidenceText = vuln.evidence
+        ?.filter((e: any) => e.line)
+        .map((e: any) => `${e.type} at line ${e.line}`)
+        .join(', ') || 'No evidence';
+
+      const diagnostic = new vscode.Diagnostic(
+        range,
+        `[${vuln.category}] ${vuln.finding}\n${evidenceText}`,
+        severity
+      );
+
+      diagnostic.code = vuln.cwe;
+      diagnostic.source = 'FivoSense';
+      
+      // Add taint path as related info
+      if (vuln.path && vuln.path.length > 0) {
+        diagnostic.relatedInformation = [
+          new vscode.DiagnosticRelatedInformation(
+            new vscode.Location(document.uri, range),
+            `Taint path: ${vuln.path.join(' → ')}`
+          )
+        ];
+      }
+
+      diagnostics.push(diagnostic);
+    }
+
+    // Convert secrets to VS Code diagnostics
+    for (const secret of result.secrets) {
+      const range = new vscode.Range(
+        secret.line - 1, 0,
+        secret.line - 1, 1000
       );
 
       const diagnostic = new vscode.Diagnostic(
         range,
-        `[${finding.type}] ${finding.message}\n${finding.evidence}`,
-        severity
+        `[Secret] ${secret.type} detected: ${secret.match}`,
+        vscode.DiagnosticSeverity.Warning
       );
 
-      diagnostic.code = finding.cwe;
+      diagnostic.code = 'CWE-798';
       diagnostic.source = 'FivoSense';
-      
-      // Add fix as code action
-      if (finding.fix) {
-        diagnostic.relatedInformation = [
-          new vscode.DiagnosticRelatedInformation(
-            new vscode.Location(document.uri, range),
-            `Fix: ${finding.fix}`
-          )
-        ];
-      }
+      diagnostic.relatedInformation = [
+        new vscode.DiagnosticRelatedInformation(
+          new vscode.Location(document.uri, range),
+          'Fix: Use environment variables instead of hardcoded secrets'
+        )
+      ];
+
+      diagnostics.push(diagnostic);
+    }
+
+    // Convert destructive commands to VS Code diagnostics
+    for (const cmd of result.destructive) {
+      const range = new vscode.Range(
+        cmd.line - 1, 0,
+        cmd.line - 1, 1000
+      );
+
+      const diagnostic = new vscode.Diagnostic(
+        range,
+        `[Destructive] ${cmd.command} - ${cmd.reason}`,
+        vscode.DiagnosticSeverity.Error
+      );
+
+      diagnostic.source = 'FivoSense';
+      diagnostic.relatedInformation = [
+        new vscode.DiagnosticRelatedInformation(
+          new vscode.Location(document.uri, range),
+          `Suggestion: ${cmd.suggestion}`
+        )
+      ];
 
       diagnostics.push(diagnostic);
     }
