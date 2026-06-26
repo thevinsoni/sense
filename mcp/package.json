@@ -1,6 +1,6 @@
 {
   "name": "fivosense-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for FivoSense security scanner",
   "type": "module",
   "main": "index.js",
@@ -10,7 +10,12 @@
   "scripts": {
     "start": "node index.js"
   },
-  "keywords": ["mcp", "security", "fivosense", "ai-agent"],
+  "keywords": [
+    "mcp",
+    "security",
+    "fivosense",
+    "ai-agent"
+  ],
   "author": "Fivo Sense Contributors",
   "license": "MIT",
   "dependencies": {

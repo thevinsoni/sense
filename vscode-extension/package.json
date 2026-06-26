@@ -2,7 +2,7 @@
   "name": "fivosense-vscode",
   "displayName": "FivoSense Security Scanner",
   "description": "Real-time security vulnerability detection with AI-powered taint analysis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "fivosense",
   "engines": {
     "vscode": "^1.80.0"
@@ -81,7 +81,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "fivosense": "^0.1.5"
+    "fivosense": "^0.1.6"
   },
   "repository": {
     "type": "git",
