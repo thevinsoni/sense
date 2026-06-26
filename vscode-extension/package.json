@@ -81,14 +81,14 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "fivosense": "^0.1.3"
+    "fivosense": "^0.1.5"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/itsvinsoni/sense.git"
+    "url": "https://github.com/thevinsoni/sense.git"
   },
   "bugs": {
-    "url": "https://github.com/itsvinsoni/sense/issues"
+    "url": "https://github.com/thevinsoni/sense/issues"
   },
   "license": "MIT"
 }
