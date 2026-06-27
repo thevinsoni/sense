@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "bin": {
-    "fivosense-mcp": "./index.js"
+    "fivosense-mcp": "index.js"
   },
   "scripts": {
     "start": "node index.js"
