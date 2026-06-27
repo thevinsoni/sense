@@ -1,6 +1,6 @@
 {
   "name": "fivosense",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Neuro-symbolic AI security plugin with taint-trace proof generation",
   "main": "dist/index.js",
   "type": "module",

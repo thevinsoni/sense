@@ -110,13 +110,14 @@ Findings:
 
 ### 🔑 Catch Leaked API Keys Before Hackers Do
 
-FivoSense detects 9 types of hardcoded secrets:
-- OpenAI API keys (`sk-proj-...`)
-- GitHub tokens (`ghp_...`)
-- AWS access keys (`AKIA...`)
-- Google API keys (`AIza...`)
-- Passwords in source code
-- Database connection strings
+FivoSense detects 55+ types of hardcoded secrets:
+- AI: OpenAI (`sk-proj-...`), Anthropic (`sk-ant-...`)
+- Cloud: AWS (`AKIA...`), Azure, GCP, Firebase
+- Git: GitHub (`ghp_...`, `ghs_...`), GitLab (`glpat-...`)
+- SaaS: Slack, Discord, Stripe, Shopify, npm, PyPI
+- Comms: Telegram, SendGrid, Twilio, New Relic
+- Databases: MongoDB, PostgreSQL, MySQL, Redis connection strings
+- Generic: passwords, API keys, tokens, bearer auth
 
 **Why this matters:** One leaked API key = thousands of dollars in unauthorized usage. One leaked database password = all your user data exposed. FivoSense catches these before you push.
 
@@ -124,12 +125,13 @@ FivoSense detects 9 types of hardcoded secrets:
 
 ### 💥 Block Destructive Commands Before They Execute
 
-FivoSense detects and blocks dangerous commands:
-- `rm -rf /` (delete everything)
-- `DROP TABLE` (delete database table)
-- `TRUNCATE` (wipe all data)
-- `chmod 777` (open permissions)
-- `curl | bash` (remote code execution)
+FivoSense detects and blocks 58+ dangerous commands:
+- Filesystem: `rm -rf /`, `mkfs`, `shred`, `dd`
+- Database: `DROP TABLE`, `TRUNCATE`, `DELETE` without WHERE
+- System: `shutdown`, `reboot`, fork bombs, `kill -9 1`
+- Network: `iptables -F`, `curl | bash`, firewall disable
+- Containers: Docker mass delete, Kubernetes namespace wipe
+- Privilege: `chmod 777`, SUID bit, sudoers manipulation
 
 **Why this matters:** One wrong command in production = all data gone. Forever. No recovery. FivoSense stops it before it happens.
 
@@ -203,7 +205,7 @@ Now when you ask Claude "Is my code secure?" — it doesn't guess. It runs FivoS
 | **Answer** | "Might be vulnerable" | "IS vulnerable, line 13" |
 | **Proof** | None | Full taint-trace path |
 | **Exploit** | None | Working PoC generated |
-| **Secrets** | Misses hidden keys | Catches 9 secret types |
+| **Secrets** | Misses hidden keys | Catches 55+ secret types |
 | **Batch scan** | Copy-paste one file | Scan 100 files in 15 sec |
 | **CI/CD** | Can't run automatically | GitHub Actions, pre-push hooks |
 | **Consistency** | Different answer every time | Deterministic, same result |
@@ -237,7 +239,7 @@ Now when you ask Claude "Is my code secure?" — it doesn't guess. It runs FivoS
 | **False positives** | ~30% | ~5% |
 | **Proof** | "Rule violated" | "Input flows: req.query → db.execute" |
 | **AI verification** | No | Yes |
-| **Secrets** | No | Yes (9 patterns) |
+| **Secrets** | No | Yes (55+ patterns) |
 | **Exploits** | No | Yes (auto-generated) |
 
 **The difference:** ESLint catches obvious patterns. FivoSense traces actual data flow and proves exploitability.
@@ -308,10 +310,23 @@ npx fivosense src/**/*.js
 | XSS | 🟠 HIGH | Hijack user sessions |
 | Path Traversal | 🟠 HIGH | Read any file on server |
 | NoSQL Injection | 🟠 HIGH | Bypass authentication |
+| SSRF | 🟠 HIGH | Access internal services |
+| XXE | 🔴 CRITICAL | Read server files |
+| LDAP Injection | 🔴 CRITICAL | Bypass directory auth |
+| SSTI | 🔴 CRITICAL | Execute code on server |
+| Open Redirect | 🟠 HIGH | Phishing attacks |
+| Header Injection | 🟠 HIGH | Response splitting |
+| Insecure Deserialization | 🔴 CRITICAL | Remote code execution |
+| JWT Vulnerabilities | 🔴 CRITICAL | Auth bypass |
+| GraphQL Injection | 🟠 HIGH | Data exfiltration |
+| Prototype Pollution | 🔴 CRITICAL | Object manipulation |
+| Weak Crypto | 🟠 HIGH | Broken encryption |
+| File Upload | 🟠 HIGH | Arbitrary file upload |
+| Regex DoS | 🟠 HIGH | Server hang |
 | Hardcoded Secrets | 🟠 HIGH | Unauthorized API access |
 | Destructive Commands | 🔴 BLOCKED | Delete all data |
 
-**54 patterns across 8 categories.**
+**433 patterns across 20+ categories.**
 
 ---
 
@@ -319,8 +334,8 @@ npx fivosense src/**/*.js
 
 ```
 Your Code → Parse into AST → Build Data-Flow Graph → Trace User Input
-    → Check Sanitization → Match 54 Patterns → Detect Secrets
-    → AI Verify (optional) → Generate Report with Proof + Fix
+    → Check Sanitization → Match 433 Patterns → Detect 55+ Secret Types
+    → Block 58+ Destructive Commands → AI Verify (optional) → Generate Report
 ```
 
 **This is NOT regex matching.** This is real AST-based data-flow analysis — the same technique used by Google and Facebook for their internal security tools.
@@ -389,4 +404,4 @@ fivosense src/**/*.js
 
 ---
 
-*Version 0.1.6 | 54 detection patterns | AST-based taint analysis | AI verification | Free & Open Source*
+*Version 0.2.0 | 433 detection patterns | 20+ vulnerability categories | AST-based taint analysis | AI verification | Free & Open Source*
