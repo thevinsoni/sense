@@ -1,143 +1,101 @@
-# FivoSense VS Code Extension
+# FivoSense for VS Code
 
-Real-time security vulnerability detection for JavaScript and TypeScript with AI-powered taint analysis.
+### Security vulnerabilities? You'll see them as you type.
 
-## Features
-
-- **Real-time Security Scanning**: Detects vulnerabilities as you type
-- **54+ Detection Patterns**: SQL injection, XSS, command injection, secrets, destructive commands
-- **Taint-Trace Proofs**: Shows exact data flow from input to vulnerability
-- **Auto-Fix Suggestions**: Quick fixes for common vulnerabilities
-- **Roast Mode**: Fun security feedback 🔥
-- **Security Badge**: Get your code's security grade
-
-## Installation
-
-### From .vsix
-```bash
-code --install-extension fivosense-vscode-0.1.1.vsix
-```
-
-### From Source
-```bash
-git clone https://github.com/thevinsoni/sense.git
-cd sense/vscode-extension
-npm install
-npm run package
-code --install-extension fivosense-vscode-0.1.1.vsix
-```
-
-## Usage
-
-### Commands
-
-- **FivoSense: Scan Current File** - Scan the active file
-- **FivoSense: Scan Workspace** - Scan all JS/TS files in workspace
-- **FivoSense: Roast Mode 🔥** - Get roasted for your security issues
-- **FivoSense: Get Security Badge** - See your code's security grade
-
-### Settings
-
-- `fivosense.enableRealTime` - Enable real-time scanning (default: true)
-- `fivosense.scanOnSave` - Scan files on save (default: true)
-- `fivosense.severity` - Minimum severity to report (default: "all")
-
-## Detection Capabilities
-
-### SQL Injection
-```javascript
-// ❌ Detected
-const query = `SELECT * FROM users WHERE id = ${userId}`;
-db.execute(query);
-
-// ✅ Safe
-db.execute('SELECT * FROM users WHERE id = ?', [userId]);
-```
-
-### XSS
-```javascript
-// ❌ Detected
-element.innerHTML = userInput;
-
-// ✅ Safe
-element.textContent = userInput;
-```
-
-### Command Injection
-```javascript
-// ❌ Detected
-exec(`git clone ${repo}`);
-
-// ✅ Safe
-execFile('git', ['clone', repo]);
-```
-
-### Secrets
-```javascript
-// ❌ Detected
-const apiKey = "sk-proj-abcd1234";
-
-// ✅ Safe
-const apiKey = process.env.OPENAI_API_KEY;
-```
-
-## How It Works
-
-FivoSense uses **AST-based taint analysis**:
-
-1. **Graph Builder**: Parses code into data-flow graph using Babel parser
-2. **Taint Tracker**: Traces untrusted input from source to dangerous sink
-3. **Sanitization Check**: Detects if input is already sanitized (parseInt, execFile, etc.)
-4. **AI Judge**: Verifies exploitability using OpenAI/Claude/Ollama (optional)
-5. **Proof Generator**: Creates exact evidence with line numbers and CWE references
-
-## Requirements
-
-- VS Code 1.80.0 or higher
-- Node.js 20+ (for local development)
-
-## Extension Settings
-
-Configure in VS Code settings (File > Preferences > Settings):
-
-```json
-{
-  "fivosense.enableRealTime": true,
-  "fivosense.scanOnSave": true,
-  "fivosense.severity": "all"
-}
-```
-
-## Release Notes
-
-### 0.1.1
-- Fixed vulnerability reporting structure
-- Improved secret detection
-- Added proper taint-trace proofs
-- Updated to fivosense v0.1.6
-
-### 0.1.0
-- Initial release
-- Real-time scanning for JS/TS
-- 54 detection patterns
-- Taint-trace proofs
-- Roast mode & security badges
-
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/thevinsoni/sense/blob/main/CONTRIBUTING.md)
-
-## License
-
-MIT License - Copyright © 2026 thevinsoni
-
-See [LICENSE](https://github.com/thevinsoni/sense/blob/main/LICENSE)
-
-## Support
-
-- Issues: https://github.com/thevinsoni/sense/issues
-- Discussions: https://github.com/thevinsoni/sense/discussions
+Red squiggly lines. Right in your editor. Before you even save.
 
 ---
 
-**Secure your code with FivoSense!** 🛡️
+## What It Does
+
+| Feature | What Happens |
+|---------|-------------|
+| **Real-time scanning** | Vulnerabilities appear as you type |
+| **Scan on save** | Every save = automatic security check |
+| **Scan workspace** | One click = scan every JS/TS file |
+| **Roast mode** | Get roasted for your security mistakes |
+| **Badge mode** | See your security grade (A+ to F) |
+
+---
+
+## How It Looks
+
+You write this:
+```javascript
+const query = `SELECT * FROM users WHERE id = ${userId}`;
+db.execute(query);
+```
+
+FivoSense shows this:
+```
+[SQL Injection] Untrusted input reaches database query
+Taint path: req.query.id → userId → query → db.execute
+CWE-89
+```
+
+**Right in your editor. As you type.**
+
+---
+
+## What Gets Detected
+
+| Category | Severity |
+|----------|----------|
+| SQL Injection | Critical |
+| Command Injection | Critical |
+| XSS | High |
+| Hardcoded Secrets | High |
+| Path Traversal | High |
+| SSRF | High |
+| + 20 more categories | ... |
+
+**433 patterns. 20 categories. 55+ secret types.**
+
+---
+
+## Install
+
+```bash
+code --install-extension fivosense-vscode-0.1.1.vsix
+```
+
+Or install from the VS Code Marketplace (coming soon).
+
+---
+
+## Commands
+
+| Command | Shortcut |
+|---------|----------|
+| Scan Current File | `Ctrl+Shift+P` → FivoSense: Scan |
+| Scan Workspace | `Ctrl+Shift+P` → FivoSense: Scan Workspace |
+| Roast Mode | `Ctrl+Shift+P` → FivoSense: Roast |
+| Badge Mode | `Ctrl+Shift+P` → FivoSense: Badge |
+
+---
+
+## Settings
+
+| Setting | Default | What It Does |
+|---------|---------|-------------|
+| `fivosense.enableRealTime` | `true` | Scan as you type |
+| `fivosense.scanOnSave` | `true` | Scan on every save |
+| `fivosense.severity` | `"all"` | Minimum severity to show |
+
+---
+
+## Requirements
+
+- VS Code 1.80.0+
+- JavaScript or TypeScript project
+
+---
+
+## Links
+
+- **npm:** https://www.npmjs.com/package/fivosense
+- **GitHub:** https://github.com/thevinsoni/sense
+
+---
+
+MIT License — Copyright © 2026 thevinsoni

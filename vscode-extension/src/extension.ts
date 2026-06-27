@@ -153,14 +153,15 @@ async function scanDocument(document: vscode.TextDocument) {
 
     // Convert destructive commands to VS Code diagnostics
     for (const cmd of result.destructive) {
+      const line = cmd.line || 1;
       const range = new vscode.Range(
-        cmd.line - 1, 0,
-        cmd.line - 1, 1000
+        line - 1, 0,
+        line - 1, 1000
       );
 
       const diagnostic = new vscode.Diagnostic(
         range,
-        `[Destructive] ${cmd.command} - ${cmd.reason}`,
+        `[Destructive] ${cmd.description || cmd.pattern} [${cmd.severity}]`,
         vscode.DiagnosticSeverity.Error
       );
 
@@ -168,7 +169,7 @@ async function scanDocument(document: vscode.TextDocument) {
       diagnostic.relatedInformation = [
         new vscode.DiagnosticRelatedInformation(
           new vscode.Location(document.uri, range),
-          `Suggestion: ${cmd.suggestion}`
+          `Category: ${cmd.category}`
         )
       ];
 
