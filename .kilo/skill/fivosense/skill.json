@@ -1,6 +1,6 @@
 {
   "name": "fivosense",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "AI Security Guardian - Real-time vulnerability detection with taint-trace proofs",
   "author": "thevinsoni",
   "license": "MIT",
@@ -15,6 +15,6 @@
     "badge": "npx fivosense --badge"
   },
   "dependencies": {
-    "npm": "fivosense@^0.1.6"
+    "npm": "fivosense@^0.2.0"
   }
 }

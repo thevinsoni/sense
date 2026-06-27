@@ -150,7 +150,7 @@ Agent: ✅ Security scan passed. The endpoint is now secure.
 - **Real-time scanning**: Scan code as it's generated
 - **Taint-trace proofs**: Exact evidence of vulnerability paths
 - **Auto-fix suggestions**: Specific remediation guidance
-- **54 detection patterns**: SQL, XSS, command injection, secrets, destructive commands
+- **433 detection patterns**: SQL, XSS, SSRF, XXE, LDAP, SSTI, JWT, GraphQL, command injection, secrets, destructive commands
 - **Zero dependencies**: Uses FivoSense npm package
 
 ## License

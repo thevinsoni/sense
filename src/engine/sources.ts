@@ -8,7 +8,7 @@
 /**
  * Catalog of untrusted input sources (taint origins)
  * These represent user-controlled data that could be malicious
- * 40+ patterns across 8 categories
+ * 75+ patterns across 8 categories
  */
 
 export interface SourcePattern {
