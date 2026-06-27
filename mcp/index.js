@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 /**
  * FivoSense MCP Server
+ * Copyright (c) 2026 thevinsoni
+ * Licensed under the MIT License
+ * https://github.com/thevinsoni/sense
+ */
+
+/**
+ * FivoSense MCP Server
  * 
  * Model Context Protocol server that exposes FivoSense security scanning
  * capabilities to AI agents like Claude, GPT, etc.

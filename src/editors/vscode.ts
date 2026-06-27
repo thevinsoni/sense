@@ -1,4 +1,11 @@
 /**
+ * FivoSense - AI Security Scanner
+ * Copyright (c) 2026 thevinsoni
+ * Licensed under the MIT License
+ * https://github.com/thevinsoni/sense
+ */
+
+/**
  * VS Code Extension Adapter
  * Integrates FivoSense with VS Code
  */

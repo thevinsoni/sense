@@ -1,4 +1,11 @@
 /**
+ * FivoSense - AI Security Scanner
+ * Copyright (c) 2026 thevinsoni
+ * Licensed under the MIT License
+ * https://github.com/thevinsoni/sense
+ */
+
+/**
  * Catalog of dangerous sinks (vulnerability endpoints)
  * These are operations that can cause security issues if fed untrusted data
  */

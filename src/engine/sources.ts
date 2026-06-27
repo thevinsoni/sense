@@ -1,4 +1,11 @@
 /**
+ * FivoSense - AI Security Scanner
+ * Copyright (c) 2026 thevinsoni
+ * Licensed under the MIT License
+ * https://github.com/thevinsoni/sense
+ */
+
+/**
  * Catalog of untrusted input sources (taint origins)
  * These represent user-controlled data that could be malicious
  */

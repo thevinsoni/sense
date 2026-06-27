@@ -1,4 +1,11 @@
 /**
+ * FivoSense - AI Security Scanner
+ * Copyright (c) 2026 thevinsoni
+ * Licensed under the MIT License
+ * https://github.com/thevinsoni/sense
+ */
+
+/**
  * Reachability Analysis - Filters code to only entry-point reachable paths
  * This reduces analysis surface by ~97% (OpenAnt research)
  */

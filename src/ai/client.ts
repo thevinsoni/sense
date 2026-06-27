@@ -1,4 +1,11 @@
 /**
+ * FivoSense - AI Security Scanner
+ * Copyright (c) 2026 thevinsoni
+ * Licensed under the MIT License
+ * https://github.com/thevinsoni/sense
+ */
+
+/**
  * AI Client - BYOK (Bring Your Own Key) support for multiple AI providers
  */
 

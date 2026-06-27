@@ -1,4 +1,11 @@
 /**
+ * FivoSense - AI Security Scanner
+ * Copyright (c) 2026 thevinsoni
+ * Licensed under the MIT License
+ * https://github.com/thevinsoni/sense
+ */
+
+/**
  * Destructive command detection
  * Blocks dangerous operations: rm -rf, DROP TABLE, mass deletes, etc.
  */
