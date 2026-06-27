@@ -3,7 +3,7 @@
   "displayName": "FivoSense Security Scanner",
   "description": "Real-time security vulnerability detection with AI-powered taint analysis",
   "version": "0.1.1",
-  "publisher": "fivosense",
+  "publisher": "thevinsoni",
   "engines": {
     "vscode": "^1.80.0"
   },
@@ -90,5 +90,7 @@
   "bugs": {
     "url": "https://github.com/thevinsoni/sense/issues"
   },
+  "homepage": "https://github.com/thevinsoni/sense#readme",
+  "author": "thevinsoni",
   "license": "MIT"
 }

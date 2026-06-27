@@ -2,7 +2,7 @@
 
 ## Repository Not Found
 
-The repository `https://github.com/itsvinsoni/sense.git` doesn't exist yet.
+The repository `https://github.com/thevinsoni/sense.git` doesn't exist yet.
 
 ## Steps to Push:
 
@@ -20,7 +20,7 @@ If you already created the repo, run:
 ```bash
 cd /home/ubuntu/Downloads/Sense/fivosense
 git remote remove origin  # Remove old remote
-git remote add origin https://github.com/itsvinsoni/sense.git
+git remote add origin https://github.com/thevinsoni/sense.git
 git branch -M main
 git push -u origin main
 ```
@@ -30,7 +30,7 @@ If you want a different name:
 
 ```bash
 cd /home/ubuntu/Downloads/Sense/fivosense
-git remote add origin https://github.com/itsvinsoni/YOUR_REPO_NAME.git
+git remote add origin https://github.com/thevinsoni/YOUR_REPO_NAME.git
 git branch -M main
 git push -u origin main
 ```
@@ -54,7 +54,7 @@ Run this command:
 
 ```bash
 cd /home/ubuntu/Downloads/Sense/fivosense && \
-git remote add origin https://github.com/itsvinsoni/sense.git && \
+git remote add origin https://github.com/thevinsoni/sense.git && \
 git branch -M main && \
 git push -u origin main
 ```

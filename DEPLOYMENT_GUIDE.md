@@ -294,8 +294,8 @@ code --install-extension fivosense/vscode-extension/fivosense-vscode-0.1.0.vsix
 ## Support
 
 - **npm Package:** https://www.npmjs.com/package/fivosense
-- **GitHub:** https://github.com/itsvinsoni/sense
-- **Issues:** https://github.com/itsvinsoni/sense/issues
+- **GitHub:** https://github.com/thevinsoni/sense
+- **Issues:** https://github.com/thevinsoni/sense/issues
 
 ---
 

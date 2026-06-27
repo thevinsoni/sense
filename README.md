@@ -489,4 +489,10 @@ If FivoSense saved you from a security breach, give us a star on GitHub! ⭐
 
 **Stop guessing. Start proving.** 🛡️
 
+---
+
+**Copyright © 2026 thevinsoni. All rights reserved.**
+
+Licensed under the [MIT License](LICENSE).
+
 Version: 0.1.6 | Last Updated: June 27, 2026

@@ -13,15 +13,18 @@ Real-time security vulnerability detection for JavaScript and TypeScript with AI
 
 ## Installation
 
-### From Marketplace
-1. Open VS Code
-2. Go to Extensions (Ctrl+Shift+X)
-3. Search for "FivoSense"
-4. Click Install
-
 ### From .vsix
 ```bash
-code --install-extension fivosense-vscode-0.1.0.vsix
+code --install-extension fivosense-vscode-0.1.1.vsix
+```
+
+### From Source
+```bash
+git clone https://github.com/thevinsoni/sense.git
+cd sense/vscode-extension
+npm install
+npm run package
+code --install-extension fivosense-vscode-0.1.1.vsix
 ```
 
 ## Usage
@@ -80,14 +83,13 @@ const apiKey = process.env.OPENAI_API_KEY;
 
 ## How It Works
 
-FivoSense uses **neuro-symbolic taint analysis**:
+FivoSense uses **AST-based taint analysis**:
 
-1. **Graph Builder**: Parses code into data-flow graph
-2. **Taint Tracker**: Traces untrusted input to dangerous sinks
-3. **AI Judge**: Determines if paths are exploitable (coming soon)
-4. **Proof Generator**: Creates exact evidence of vulnerability
-
-Research-backed accuracy: F1 0.91-0.95
+1. **Graph Builder**: Parses code into data-flow graph using Babel parser
+2. **Taint Tracker**: Traces untrusted input from source to dangerous sink
+3. **Sanitization Check**: Detects if input is already sanitized (parseInt, execFile, etc.)
+4. **AI Judge**: Verifies exploitability using OpenAI/Claude/Ollama (optional)
+5. **Proof Generator**: Creates exact evidence with line numbers and CWE references
 
 ## Requirements
 
@@ -106,12 +108,13 @@ Configure in VS Code settings (File > Preferences > Settings):
 }
 ```
 
-## Known Issues
-
-- Real-time scanning may have slight delay on large files
-- Python support coming soon
-
 ## Release Notes
+
+### 0.1.1
+- Fixed vulnerability reporting structure
+- Improved secret detection
+- Added proper taint-trace proofs
+- Updated to fivosense v0.1.6
 
 ### 0.1.0
 - Initial release
@@ -122,16 +125,18 @@ Configure in VS Code settings (File > Preferences > Settings):
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/itsvinsoni/sense/blob/main/CONTRIBUTING.md)
+See [CONTRIBUTING.md](https://github.com/thevinsoni/sense/blob/main/CONTRIBUTING.md)
 
 ## License
 
-MIT - See [LICENSE](https://github.com/itsvinsoni/sense/blob/main/LICENSE)
+MIT License - Copyright © 2026 thevinsoni
+
+See [LICENSE](https://github.com/thevinsoni/sense/blob/main/LICENSE)
 
 ## Support
 
-- Issues: https://github.com/itsvinsoni/sense/issues
-- Discussions: https://github.com/itsvinsoni/sense/discussions
+- Issues: https://github.com/thevinsoni/sense/issues
+- Discussions: https://github.com/thevinsoni/sense/discussions
 
 ---
 

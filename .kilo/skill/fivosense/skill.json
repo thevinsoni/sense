@@ -1,12 +1,12 @@
 {
   "name": "fivosense",
-  "version": "0.1.3",
-  "description": "AI Security Guardian - Real-time vulnerability detection for AI-generated code",
-  "author": "Fivo Sense Contributors",
+  "version": "0.1.6",
+  "description": "AI Security Guardian - Real-time vulnerability detection with taint-trace proofs",
+  "author": "thevinsoni",
   "license": "MIT",
   "keywords": ["security", "vulnerability", "taint-analysis", "sql-injection", "xss", "secrets"],
   "activation": {
-    "filePatterns": ["*.js", "*.ts", "*.jsx", "*.tsx", "*.py", "*.sh", "*.sql"],
+    "filePatterns": ["*.js", "*.ts", "*.jsx", "*.tsx"],
     "events": ["beforeWrite", "beforeExec", "afterGenerate"]
   },
   "commands": {
@@ -15,6 +15,6 @@
     "badge": "npx fivosense --badge"
   },
   "dependencies": {
-    "npm": "fivosense@^0.1.3"
+    "npm": "fivosense@^0.1.6"
   }
 }

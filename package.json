@@ -25,16 +25,16 @@
     "vscode-extension",
     "code-scanner"
   ],
-  "author": "Fivo Sense Contributors",
+  "author": "thevinsoni",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/itsvinsoni/sense.git"
+    "url": "git+https://github.com/thevinsoni/sense.git"
   },
   "bugs": {
-    "url": "https://github.com/itsvinsoni/sense/issues"
+    "url": "https://github.com/thevinsoni/sense/issues"
   },
-  "homepage": "https://github.com/itsvinsoni/sense#readme",
+  "homepage": "https://github.com/thevinsoni/sense#readme",
   "devDependencies": {
     "@types/babel__core": "^7.20.5",
     "@types/babel__traverse": "^7.20.6",

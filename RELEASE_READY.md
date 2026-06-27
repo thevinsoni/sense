@@ -116,7 +116,7 @@ fivosense/
 ### Immediate:
 1. **Push to GitHub:**
    ```bash
-   git remote add origin https://github.com/itsvinsoni/sense.git
+   git remote add origin https://github.com/thevinsoni/sense.git
    git push -u origin main
    ```
 
@@ -188,8 +188,8 @@ fivosense/
 
 ## 📞 Support
 
-- Issues: https://github.com/itsvinsoni/sense/issues
-- Discussions: https://github.com/itsvinsoni/sense/discussions
+- Issues: https://github.com/thevinsoni/sense/issues
+- Discussions: https://github.com/thevinsoni/sense/discussions
 - Security: See SECURITY.md
 
 ---
